@@ -61,10 +61,20 @@ class project(osv.osv):
         if vals.has_key('description'):
             message += "\n" + _("Note  : ") + vals['description'] + "\n"
             
-        message +="\n\n" + _("Thanks,")+ "\n" + _('Yours Company')
+        message +="\n\n" + _("Thanks,") + "\n" + _('Yours Company')
         get_project = self.read(cr, uid, ids, ['name'])[0]
         project_name = get_project['name']
-        self.send_email(cr, uid, ids, project_name +": Project Updated", message, context)
-        
+        self.send_email(cr, uid, ids, project_name + ": Project Updated", message, context)
         return res
         
+    def create(self, cr, uid, vals, context=None):
+        result = super(project, self).create(cr, uid, vals, context=context)
+        self.send_email(cr, uid, [result], vals['name'] + ": Project Created", "Hell,\nNew Project created" + vals['name'] + "\n\nThanks,Yours Company.", context)
+        return result
+        
+    def unlink(self, cr, uid, ids, context=None):
+        get_project = self.read(cr, uid, ids, ['name'])[0]
+        project_name = get_project['name']
+        self.send_email(cr, uid, ids, project_name + ": Project Removed", "Hell,\n\n Project Removed " + project_name+"\n\nThanks,Yours Company.", context)
+        res = super(project, self).unlink(cr, uid, ids, context)
+        return res
