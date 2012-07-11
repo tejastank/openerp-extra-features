@@ -43,6 +43,7 @@ class project(osv.osv):
                 if users.user_email:
                     email_to.append(users.user_email)
             if current_user.user_email:
+                #return tools.email_send(current_user.user_email,list(set(email_to)),subject,body) # for version 6.0
                 msg = ir_mail_server.build_email(email_from=current_user.user_email, email_to=list(set(email_to)), subject=subject, body=body,  )
                 return ir_mail_server.send_email(cr, uid, msg, context=context)        
             else:
@@ -78,3 +79,5 @@ class project(osv.osv):
         self.send_email(cr, uid, ids, project_name + ": Project Removed", "Hell,\n\n Project Removed " + project_name+"\n\nThanks,Yours Company.", context)
         res = super(project, self).unlink(cr, uid, ids, context)
         return res
+        
+project()
