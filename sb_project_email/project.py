@@ -25,6 +25,7 @@ from datetime import datetime, date
 
 from tools.translate import _
 from osv import fields, osv
+#import tools
 
 class project(osv.osv):
     _name = "project.project"
